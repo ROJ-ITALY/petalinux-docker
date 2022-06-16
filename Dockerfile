@@ -1,13 +1,16 @@
 FROM ubuntu:18.04
 
-MAINTAINER z4yx <z4yx@users.noreply.github.com>
+MAINTAINER stefano-gurrieri <stefano.gurrieri@roj.com>
 
 # build with "docker build --build-arg PETA_VERSION=2020.2 --build-arg PETA_RUN_FILE=petalinux-v2020.2-final-installer.run -t petalinux:2020.2 ."
 
 # install dependences:
 
 ARG UBUNTU_MIRROR
-RUN [ -z "${UBUNTU_MIRROR}" ] || sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list 
+RUN [ -z "${UBUNTU_MIRROR}" ] || sed -i.bak s/archive.ubuntu.com/${UBUNTU_MIRROR}/g /etc/apt/sources.list
+
+# Set proxy for apt. Uncomment the line below if you need to use a proxy server: set <IP> and <port> with yours.
+#RUN echo "Acquire::http::Proxy \"http://192.168.1.107:8080/\";" > /etc/apt/apt.conf
 
 RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   build-essential \
@@ -56,6 +59,9 @@ RUN apt-get update &&  DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
   bc \
   u-boot-tools \
   python \
+  nano \
+  vim \
+  iputils-ping \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
