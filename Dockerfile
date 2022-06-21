@@ -103,7 +103,9 @@ ENV HOME /home/vivado
 ENV LANG en_US.UTF-8
 RUN mkdir /home/vivado/project
 RUN mkdir /home/vivado/patches
-COPY filemap.py.patch patch_apply.sh /home/vivado/patches/
+COPY --chown=vivado:vivado filemap.py.patch patch_apply.sh /home/vivado/patches/
+RUN chmod +x /home/vivado/patches/*.sh
+
 WORKDIR /home/vivado/project
 
 #add vivado tools to path
