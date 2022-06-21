@@ -54,9 +54,10 @@ $ docker images
 Typical output of case 1:
 
 ```sh
-REPOSITORY                                     TAG      IMAGE ID       CREATED         SIZE
-ghcr.io/roj-italy/petalinux-docker/petalinux   2020.2   64a63e0b4862   4 hours ago     12.9GB
-ubuntu                                         18.04    ad080923604a   9 days ago      63.1MB
+REPOSITORY                                     TAG      IMAGE ID       CREATED          SIZE
+ghcr.io/roj-italy/petalinux-docker/petalinux   2020.2   671c691ed438   19 minutes ago   12.9GB
+ubuntu                                         18.04    ad080923604a   2 weeks ago      63.1MB
+
 ```
 
 ### Run docker container
