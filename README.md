@@ -62,6 +62,29 @@ ubuntu                                         18.04    ad080923604a   2 weeks a
 
 ### Run docker container
 
+[run_docker.sh](https://github.com/ROJ-ITALY/petalinux-docker/blob/master/run_docker.sh)
+
 ```sh
 $ docker run -ti --rm -e DISPLAY=$DISPLAY --net="host" -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/enclustra/2020.2:/home/vivado/project ghcr.io/roj-italy/petalinux-docker/petalinux:2020.2 /bin/bash
+```
+
+#### Building example commands from docker container
+```sh
+petalinux-create --type project -s roj-test.bsp
+cd ~/project/ME-XU5-2EG-1I-D11E_PE1_SD
+petalinux-build
+```
+To create BOOT.BIN:
+```sh
+petalinux-package --boot --fsbl images/linux/zynqmp_fsbl.elf --u-boot images/linux/u-boot.elf --pmufw images/linux/pmufw.elf --fpga images/linux/system.bit --force
+```
+Only the first time before trying to build the .wic file:
+```sh
+cd ~/patches
+./patch_apply.sh
+```
+In any other case, just:
+```sh
+cd ~/project/ME-XU5-2EG-1I-D11E_PE1_SD
+petalinux-package --wic --wks project-spec/meta-user/scripts/lib/wic/canned-wks/aeon.wks
 ```
