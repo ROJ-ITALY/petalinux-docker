@@ -1,0 +1,105 @@
+36a37
+>         bsize = struct.unpack('I', binary_data)[0]
+38,39c39,41
+<         raise IOError("Unable to determine block size")
+<     bsize = struct.unpack('I', binary_data)[0]
+---
+>         bsize = None
+> 
+>     # If ioctl causes OSError or give bsize to zero failback to os.fstat
+143,151d144
+<     def block_is_unmapped(self, block): # pylint: disable=W0613,R0201
+<         """
+<         This method has has to be implemented by child classes. It returns
+<         'True' if block number 'block' of the image file is not mapped (hole)
+<         and 'False' otherwise.
+<         """
+< 
+<         raise Error("the method is not implemented")
+< 
+165,173d157
+<     def get_unmapped_ranges(self, start, count): # pylint: disable=W0613,R0201
+<         """
+<         This method has has to be implemented by child classes. Just like
+<         'get_mapped_ranges()', but yields unmapped block ranges instead
+<         (holes).
+<         """
+< 
+<         raise Error("the method is not implemented")
+< 
+266,269d249
+<     def block_is_unmapped(self, block):
+<         """Refer the '_FilemapBase' class for the documentation."""
+<         return not self.block_is_mapped(block)
+< 
+272,274c252,253
+<         This function implements 'get_mapped_ranges()' and
+<         'get_unmapped_ranges()' depending on what is passed in the 'whence1'
+<         and 'whence2' arguments.
+---
+>         This function implements 'get_mapped_ranges()' depending
+>         on what is passed in the 'whence1' and 'whence2' arguments.
+304,309d282
+<     def get_unmapped_ranges(self, start, count):
+<         """Refer the '_FilemapBase' class for the documentation."""
+<         self._log.debug("FilemapSeek: get_unmapped_ranges(%d,  %d(%d))"
+<                         % (start, count, start + count - 1))
+<         return self._get_ranges(start, count, _SEEK_HOLE, _SEEK_DATA)
+< 
+423,426d395
+<     def block_is_unmapped(self, block):
+<         """Refer the '_FilemapBase' class for the documentation."""
+<         return not self.block_is_mapped(block)
+< 
+503c472,478
+<     def get_unmapped_ranges(self, start, count):
+---
+> class FilemapNobmap(_FilemapBase):
+>     """
+>     This class is used when both the 'SEEK_DATA/HOLE' and FIEMAP are not
+>     supported by the filesystem or kernel.
+>     """
+> 
+>     def __init__(self, image, log=None):
+505,512d479
+<         self._log.debug("FilemapFiemap: get_unmapped_ranges(%d,  %d(%d))"
+<                         % (start, count, start + count - 1))
+<         hole_first = start
+<         for first, last in self._do_get_mapped_ranges(start, count):
+<             if first > hole_first:
+<                 self._log.debug("FilemapFiemap: yielding range (%d, %d)"
+<                                 % (hole_first, first - 1))
+<                 yield (hole_first, first - 1)
+514c481,487
+<             hole_first = last + 1
+---
+>         # Call the base class constructor first
+>         _FilemapBase.__init__(self, image, log)
+>         self._log.debug("FilemapNobmap: initializing")
+> 
+>     def block_is_mapped(self, block):
+>         """Refer the '_FilemapBase' class for the documentation."""
+>         return True
+516,519c489,493
+<         if hole_first < start + count:
+<             self._log.debug("FilemapFiemap: yielding range (%d, %d)"
+<                             % (hole_first, start + count - 1))
+<             yield (hole_first, start + count - 1)
+---
+>     def get_mapped_ranges(self, start, count):
+>         """Refer the '_FilemapBase' class for the documentation."""
+>         self._log.debug("FilemapNobmap: get_mapped_ranges(%d,  %d(%d))"
+>                         % (start, count, start + count - 1))
+>         yield (start, start + count -1)
+534c508,511
+<         return FilemapSeek(image, log)
+---
+>         try:
+>             return FilemapSeek(image, log)
+>         except ErrorNotSupp:
+>             return FilemapNobmap(image, log)
+599c576
+<     dst_file.close()
+---
+>     dst_file.close()
+\ No newline at end of file
