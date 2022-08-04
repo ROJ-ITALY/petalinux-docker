@@ -24,8 +24,8 @@ jobs:
       - name: Copy file
         uses: canastro/copy-action@0.0.2
         with:
-	   source: "petalinux-v2020.2-final-installer.run"
-	   target: "petalinux-v2020.2-final-installer.run"
+          source: "petalinux-v2020.2-final-installer.run"
+          target: "petalinux-v2020.2-final-installer.run"
 
       # Build docker image
       - name: Build
