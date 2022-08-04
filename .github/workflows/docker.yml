@@ -1,0 +1,40 @@
+# This is a workflow called "docker" to build and upload a docker image on GHCR
+
+name: docker
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push tag
+  push:
+    tags: [ '2020.2 + .[0-9][0-9]' ]
+
+# Define JOBS
+jobs:
+  # This workflow contains a single job called "GHCR"
+  GHCR:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Build docker image
+      - name: Build
+        run: docker build --build-arg PETA_VERSION=2020.2 --build-arg PETA_RUN_FILE=petalinux-v2020.2-final-installer.run -t petalinux .
+
+      # Login to GitHub Container Registry 
+      - name: Login to GHCR
+        uses: docker/login-action@master
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+          
+      # Upload to GitHub Container Registry 
+      - name: Upload to GHCR
+        run:
+          docker tag petalinux ghcr.io/roj-italy/petalinux-docker/petalinux:${{ github.ref_name }}
+          docker push ghcr.io/roj-italy/petalinux-docker/petalinux:${{ github.ref_name }}
+        
