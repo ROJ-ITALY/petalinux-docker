@@ -6,7 +6,8 @@ name: docker
 on:
   # Triggers the workflow on push tag
   push:
-    tags: [ '2020.2 + .[0-9][0-9]' ]
+    tags:
+      - '2020.2 + .[0-9][0-9]'
 
 # Define JOBS
 jobs:
@@ -19,7 +20,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repo
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: Copy file
         uses: canastro/copy-action@0.0.2
