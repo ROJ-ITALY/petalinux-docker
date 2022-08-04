@@ -22,12 +22,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Copy file
-        uses: canastro/copy-action@0.0.2
-        with:
-          source: "petalinux-v2020.2-final-installer.run"
-          target: "petalinux-v2020.2-final-installer.run"
-
       # Build docker image
       - name: Build
         run: docker build --build-arg PETA_VERSION=2020.2 --build-arg PETA_RUN_FILE=petalinux-v2020.2-final-installer.run -t petalinux .

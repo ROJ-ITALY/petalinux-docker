@@ -83,7 +83,10 @@ RUN adduser --disabled-password --gecos '' vivado && \
   usermod -aG sudo vivado && \
   echo "vivado ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-COPY accept-eula.sh ${PETA_RUN_FILE} /
+RUN cd /
+RUN wget --load-cookies /cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1__Zji9pYQePmZXPVUuA22DjvAPYQAXcu' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1__Zji9pYQePmZXPVUuA22DjvAPYQAXcu" -O ${PETA_RUN_FILE} && rm -rf /cookies.txt
+
+COPY accept-eula.sh /
 
 # run the install
 RUN chmod a+rx /${PETA_RUN_FILE} && \
