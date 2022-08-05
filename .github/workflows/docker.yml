@@ -32,7 +32,7 @@ jobs:
         with:
           registry: ghcr.io
           username: stefano-gurrieri
-          password: ${{ secrets.CR_PAT }}
+          password: ${{ secrets.SGU_PAT }}
           
       # Upload to GitHub Container Registry 
       - name: Upload to GHCR
