@@ -28,7 +28,7 @@ or Click [here](https://docs.docker.com/compose/install/) for an eventual partic
 ### Get the yocto image (2 different possibilities)
 1. Use the already compiled image (preferred solution)
 ```sh
-$ docker pull ghcr.io/roj-italy/petalinux-docker/petalinux:2020.2
+$ docker pull ghcr.io/roj-italy/petalinux-docker/petalinux:2020.2.01
 ```
 
 2. Build the image
@@ -42,9 +42,9 @@ $ git clone git@github.com:ROJ-ITALY/petalinux-docker.git
 ```sh
 $ cd petalinux-docker/
 ```
-- Copy 'petalinux-v2020.2-final-installer.run' file to this folder, then run:
+- Run:
 ```sh
-$ docker build --build-arg PETA_VERSION=2020.2 --build-arg PETA_RUN_FILE=petalinux-v2020.2-final-installer.run -t petalinux:2020.2 .
+$ docker build --build-arg PETA_VERSION=2020.2 --build-arg -t petalinux:2020.2.01 .
 ```
 
 ### Check the docker yocto image installed
@@ -54,9 +54,9 @@ $ docker images
 Typical output of case 1:
 
 ```sh
-REPOSITORY                                     TAG      IMAGE ID       CREATED          SIZE
-ghcr.io/roj-italy/petalinux-docker/petalinux   2020.2   671c691ed438   19 minutes ago   12.9GB
-ubuntu                                         18.04    ad080923604a   2 weeks ago      63.1MB
+REPOSITORY                                     TAG         IMAGE ID       CREATED          SIZE
+ghcr.io/roj-italy/petalinux-docker/petalinux   2020.2.01   e0235f678369   23 minutes ago   12.9GB
+ubuntu                                         18.04       ad080923604a   8 weeks ago      63.1MB
 
 ```
 
@@ -65,7 +65,7 @@ ubuntu                                         18.04    ad080923604a   2 weeks a
 [run_docker.sh](https://github.com/ROJ-ITALY/petalinux-docker/blob/master/run_docker.sh)
 
 ```sh
-$ docker run -ti --rm -e DISPLAY=$DISPLAY --net="host" -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/enclustra/2020.2:/home/vivado/project ghcr.io/roj-italy/petalinux-docker/petalinux:2020.2 /bin/bash
+$ docker run -ti --rm -e DISPLAY=$DISPLAY --net="host" -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/enclustra/2020.2:/home/vivado/project ghcr.io/roj-italy/petalinux-docker/petalinux:2020.2.01 /bin/bash
 ```
 
 #### Building example commands from docker container
