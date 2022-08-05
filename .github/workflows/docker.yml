@@ -31,7 +31,7 @@ jobs:
         uses: docker/login-action@master
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: stefano-gurrieri
           password: ${{ secrets.CR_PAT }}
           
       # Upload to GitHub Container Registry 
