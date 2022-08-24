@@ -84,7 +84,11 @@ RUN adduser --disabled-password --gecos '' vivado && \
   echo "vivado ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 RUN cd /
-RUN wget --load-cookies /cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1__Zji9pYQePmZXPVUuA22DjvAPYQAXcu' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1__Zji9pYQePmZXPVUuA22DjvAPYQAXcu" -O ${PETA_RUN_FILE} && rm -rf /cookies.txt
+
+# from Google Drive
+#RUN wget --load-cookies /cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1__Zji9pYQePmZXPVUuA22DjvAPYQAXcu' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1__Zji9pYQePmZXPVUuA22DjvAPYQAXcu" -O ${PETA_RUN_FILE} && rm -rf /cookies.txt
+# from FTP ROJ
+RUN wget --secure-protocol=auto --ftp-user=petalinux --ftp-password='iKvewshg!6hg' --passive-ftp ftps://ftp.roj.com/petalinux-v2020.2-final-installer.run
 
 COPY accept-eula.sh /
 
